@@ -323,278 +323,37 @@
       
         
           
-            <h1 id="学习顺序"><a href="#学习顺序" class="headerlink" title="学习顺序"></a>学习顺序</h1><ul>
-<li>无向图（简单连接）</li>
-<li>有向图（连接有方向）</li>
-<li>加权图（连接带有权值）</li>
-<li>加权有向图（连接即有方向性又带有权值）</li>
-</ul>
-<h1 id="无向图"><a href="#无向图" class="headerlink" title="无向图"></a>无向图</h1><ul>
-<li><p>边：</p>
-<blockquote>
-<p>两个顶点之间的连接</p>
-</blockquote>
-</li>
-<li><p>特殊情况：</p>
-<ul>
-<li>自环：一条连接一个顶点和其自身的边</li>
-<li>平行边：连接同一对顶点的两条边</li>
-</ul>
-</li>
-<li><p>术语</p>
-<ul>
-<li><p>相邻顶点：</p>
-<blockquote>
-<p>通过一条边相连的两个顶点，并称该连接依附于这两个顶点</p>
-</blockquote>
-</li>
-<li><p>子图：</p>
-<blockquote>
-<p>一幅图的所有的边的一个子集</p>
-</blockquote>
-</li>
-<li><p>路径</p>
-<blockquote>
-<p>由边顺序连接的一系列顶点</p>
-</blockquote>
-</li>
-<li><p>连通图：</p>
-<blockquote>
-<p>从任意一个顶点到另一个任意顶点都存在一条路径</p>
-<p>一幅非连通图是由若干的极大连通子图组成</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="表示无向图的数据类型"><a href="#表示无向图的数据类型" class="headerlink" title="表示无向图的数据类型"></a>表示无向图的数据类型</h2><ul>
-<li><p>图的基本操作api：</p>
-<ul>
-<li><p>Graph(int V)：</p>
-<p>创建一个含有v个顶点但不含有边的图</p>
-</li>
-<li><p>Graph(In in)：</p>
-<p>从标准输入流in读入一幅图</p>
-</li>
-<li><p>int V()：</p>
-<p>顶点数</p>
-</li>
-<li><p>int E()：</p>
-<p>边数</p>
-</li>
-<li><p>void addEdge(int v, int w)：</p>
-<p>向图中添加一条边v-&gt;w</p>
-</li>
-<li><p>Iterable<integer> adj(int v)：</integer></p>
-<p>和v相邻的所有顶点</p>
-</li>
-<li><p>String toString()：</p>
-<p>对象的字符串表示</p>
-</li>
-</ul>
-</li>
-<li><p>图的常用方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算v的度数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">degree</span><span class="params">(Graph G, <span class="keyword">int</span> V)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> degree = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> w: G.adj(v)) degree++;</span><br><span class="line">  <span class="keyword">return</span> degree;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算所有顶点的最大度数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">maxDegree</span><span class="params">(Graph G)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; G.V(); v++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (degree(G,v) &gt; max) max = degree(G, v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算所有顶点的平均度数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">avgDegree</span><span class="params">(Graph G)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">2</span>*G.E() / G.V();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算自环的个数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">numberOfSelfLoops</span><span class="params">(Graph G)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; G.V(); v++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> w: G.adj(v)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (v == w) count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里我想不通呀</span></span><br><span class="line">    <span class="keyword">return</span> count/<span class="number">2</span>; <span class="comment">// 每条边都被记过两次</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 图的邻接表的字符串表示</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  String s = V + <span class="string">"vertices, "</span> + E + <span class="string">"edges\n"</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> v=<span class="number">0</span>; v&lt;V; v++) &#123;</span><br><span class="line">    s += v + <span class="string">":"</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> w: <span class="keyword">this</span>.adj(v)) &#123;</span><br><span class="line">      s += w + <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    s += <span class="string">"\n"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          学习顺序
+无向图（简单连接）
+有向图（连接有方向）
+加权图（连接带有权值）
+加权有向图（连接即有方向性又带有权值）
 
-</li>
-</ul>
-<h2 id="图的几种表示方法"><a href="#图的几种表示方法" class="headerlink" title="图的几种表示方法"></a>图的几种表示方法</h2><ul>
-<li><p>数据结构选择要求</p>
-<ul>
-<li>必须为可能在应用中碰到的各种类型的图预留出足够的空间</li>
-<li>Graph的实例方法的实现一定要快——它们是开发处理图的各种用例的基础</li>
-</ul>
-</li>
-<li><p>表示方法：</p>
-<ul>
-<li><p>邻接矩阵：</p>
-<blockquote>
-<p>使用V*V的布尔矩阵，两顶点间有边相连时bool为true。</p>
-<p>此表达方法不符合第一个条件，上百万个顶点的图所需的存储空间过大</p>
-</blockquote>
-</li>
-<li><p>边的数组</p>
-<blockquote>
-<p>使用edge类，含有两个int实例变量（表示一条边及对应的顶点）</p>
-<p>此表达方法不符合第二个条件，实现adj（）方法（查询一个顶点的所有相邻顶点）需要检查所有的edge实例，即检查所有的边，成本过高</p>
-</blockquote>
-</li>
-<li><p>邻接表数组</p>
-<blockquote>
-<p>使用以顶点为索引的列表数组，数组中的每个元素都为该顶点相邻的顶点列表</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="邻接表的数据结构"><a href="#邻接表的数据结构" class="headerlink" title="邻接表的数据结构"></a>邻接表的数据结构</h2><ul>
-<li>数组+链表的数据结构</li>
-<li>要添加一条连接v，w的边，将w添加到v的邻接表，将v添加到w的邻接表</li>
-<li>性能特点<ul>
-<li>使用的空间和V+E成正比</li>
-<li>添加一条边所需的时间为常数</li>
-<li>遍历顶点v的所有相邻顶点所需的时间和v的度数成正比（处理每个相邻顶点所需的时间为常数）</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Graph数据类型</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Graph</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> V; <span class="comment">// 顶点数目</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> E; <span class="comment">// 边的数目</span></span><br><span class="line">  <span class="comment">// 邻接表，可以用List</span></span><br><span class="line">  <span class="keyword">private</span> Bag&lt;Integer&gt;[] adj; </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Graph</span><span class="params">(<span class="keyword">int</span> V)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.V = V;</span><br><span class="line">    <span class="keyword">this</span>.E = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 创建邻接表</span></span><br><span class="line">    adj = (Bag&lt;Integer&gt;[]) <span class="keyword">new</span> Bag[V]; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; V; v++) &#123;</span><br><span class="line">      <span class="comment">// 将所有邻接表的链表初始化为空</span></span><br><span class="line">      adj[v] = <span class="keyword">new</span> Bag&lt;Integer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Graph</span><span class="params">(In in)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(in.readInt()); <span class="comment">// 读取V并将图初始化</span></span><br><span class="line">    <span class="keyword">int</span> E = in.readInt(); <span class="comment">// 读取E</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; E; i++) &#123;</span><br><span class="line">      <span class="comment">// 添加一条边</span></span><br><span class="line">      <span class="keyword">int</span> v = in.readInt(); <span class="comment">// 读取一个顶点</span></span><br><span class="line">      <span class="keyword">int</span> w = in.readInt(); <span class="comment">// 读取另一个顶点</span></span><br><span class="line">      addEdge(v, w); <span class="comment">// 添加一条连接两个顶点的边</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">V</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> V;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">E</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> E;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w)</span> </span>&#123;</span><br><span class="line">    adj[v].add(w); <span class="comment">// w添加到v的邻接表</span></span><br><span class="line">    adj[w].add(v); <span class="comment">// v添加到w的邻接表</span></span><br><span class="line">    E++;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title">adj</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> adj[v];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+无向图
+边：
 
-<ul>
-<li><p>实际应用中的操作：</p>
-<blockquote>
-<ul>
-<li>添加一个顶点</li>
-<li>删除一个顶点</li>
-</ul>
-<p>可通过扩展之前的API，使用符号表（ST）代替数组实现以上操作</p>
-<ul>
-<li>删除一条边</li>
-<li>检查图是否含有边v-w</li>
-</ul>
-<p>要实现以上操作，可能需要使用Set（集合）来实现邻接表，称此数据结构为邻接集</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="图的处理算法的设计模式"><a href="#图的处理算法的设计模式" class="headerlink" title="图的处理算法的设计模式"></a>图的处理算法的设计模式</h2><ul>
-<li><p>图处理算法的API</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Search</span> </span>&#123;</span><br><span class="line">  <span class="comment">// s（source）作为图的起点，是搜索图时的入口</span></span><br><span class="line">	<span class="comment">// 找到和起点source连通的所有顶点</span></span><br><span class="line">  Search(Graph G, <span class="keyword">int</span> s);</span><br><span class="line">  <span class="comment">// v和s是否连通</span></span><br><span class="line">  marked(<span class="keyword">int</span> v);</span><br><span class="line">  <span class="comment">// 与s连通的顶点总数</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">count</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>图处理的测试用例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSearch</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Graph G = <span class="keyword">new</span> Graph(<span class="keyword">new</span> In(args[<span class="number">0</span>]));</span><br><span class="line">    <span class="keyword">int</span> s = Integer.parseInt(args[<span class="number">1</span>]);</span><br><span class="line">    Search search = <span class="keyword">new</span> Search(G, s);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; G.V(); v++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (search.marked(v)) &#123;</span><br><span class="line">        System.out.print(v + <span class="string">" "</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println();</span><br><span class="line">    <span class="comment">// 判断是否为连通图</span></span><br><span class="line">    <span class="keyword">if</span>(search.count() != G.V()) &#123;</span><br><span class="line">      System.out.print(<span class="string">"NOT "</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">"connected"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><ul>
-<li><p>参考走迷宫问题——Tremaux搜索</p>
-<blockquote>
-<ul>
-<li>选择一条没有标记过的通道，在你走过的路上铺一条绳子</li>
-<li>标记所有你第一次路过的路口和通道</li>
-<li>当来到一个标记过的路口时（用绳子）回退到上个路口</li>
-<li>当回退到的路口已没有可走的通道时继续回退</li>
-</ul>
-</blockquote>
-</li>
-<li><p>图的深度优先搜索</p>
-<ul>
-<li><p>思路</p>
-<blockquote>
-<p>搜索一幅图只需用一个递归方法来遍历所有顶点</p>
-<p>在访问其中一个顶点时：</p>
-<ul>
-<li>将它标记为已访问</li>
-<li>递归的访问它的所有没有被标记过的邻居顶点</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DepthFirstSearch</span> </span>&#123;</span><br><span class="line">  <span class="comment">// marked内标记顶点是否已被探索过</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">DepthFirstSearch</span><span class="params">(Graph G, <span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    dfs(G, s);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Graph G, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 每搜索过一个顶点，将其设置为已探索状态</span></span><br><span class="line">    marked[v] = <span class="keyword">true</span>;</span><br><span class="line">    count++;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> w : G.adj(v)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[w]) dfs(G, w);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 判断是否探索过当前输入顶点w</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">marked</span><span class="params">(<span class="keyword">int</span> w)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> marked[w];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="单向通道"><a href="#单向通道" class="headerlink" title="单向通道"></a>单向通道</h3><blockquote>
-<p>当已经处理过依附于一个顶点的所有边时，我们就只能返回。</p>
-<p>在无向图的深度优先搜索中，在碰到边v-w时，要么进行递归调用（w没有被标记过），要么跳过这条边。</p>
-<p>第二次从另一个方向w-v遇到这条边时，总是会忽略它，因为v肯定已经被访问过了</p>
-</blockquote>
-<h3 id="寻找路径"><a href="#寻找路径" class="headerlink" title="寻找路径"></a>寻找路径</h3><ul>
-<li><p>单点路径</p>
-<blockquote>
-<p>给定一幅图和一个起点s，回答：</p>
-<p>从s到给定目的顶点v是否存在一条路径？</p>
-<p>如果有，找出这条路径</p>
-</blockquote>
-</li>
-<li><p>寻路API</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Paths</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 在G中找出所有起点为s的路径</span></span><br><span class="line">  Paths(Graph G, <span class="keyword">int</span> s);</span><br><span class="line">  <span class="comment">// 是否存在从s到v的路径</span></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">hasPathTo</span><span class="params">(<span class="keyword">int</span> v)</span></span>;</span><br><span class="line">  <span class="comment">// s到v的路径，如果不存在则返回null</span></span><br><span class="line">  <span class="function">Iterable&lt;Integer&gt; <span class="title">pathTo</span><span class="params">(<span class="keyword">int</span> v)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Paths实现的测试用例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  Graph G = <span class="keyword">new</span> Graph(<span class="keyword">new</span> In(args[<span class="number">0</span>]));</span><br><span class="line">  <span class="keyword">int</span> s = Integer.parseInt(args[<span class="number">1</span>]);</span><br><span class="line">  Paths search = <span class="keyword">new</span> Paths(G, s);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; G.V(); v++) &#123;</span><br><span class="line">    sout(s + <span class="string">"to"</span> + v + <span class="string">":"</span>);</span><br><span class="line">    <span class="keyword">if</span> (search.hasPathTo(v)) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> x : search.pathTo(v)) &#123;</span><br><span class="line">        <span class="keyword">if</span>(x == s) sout(x);</span><br><span class="line">        <span class="keyword">else</span> sout(<span class="string">"-"</span> + x);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    sout();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DepthFirstPaths</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 这个顶点上是否是连通的</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">  <span class="comment">// 从起点到一个顶点的已知路径上的最后一个顶点</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span>[] edgeTo;</span><br><span class="line">  <span class="comment">// 起点</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">DepthFirstPaths</span><span class="params">(Graph G, <span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    edgeTo = <span class="keyword">new</span> <span class="keyword">int</span>[G.V()];</span><br><span class="line">    <span class="keyword">this</span>.s = s;</span><br><span class="line">    dfs(G,s);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 深度优先搜索</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Graph G, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    marked[v] = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> w : G.adj(v)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!hasPathTo(w)) &#123;</span><br><span class="line">        edgeTo[w] = v;</span><br><span class="line">        dfs(G,w);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasPathTo</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> marked[v];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title">pathTo</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasPathTo(v)) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    Stack&lt;Integer&gt; path = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = v; x != s; x = edgeTo[x]) &#123;</span><br><span class="line">      path.push(x);</span><br><span class="line">    &#125;</span><br><span class="line">    path.push(s);</span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><ul>
-<li><p>单点最短路径：</p>
-<blockquote>
-<p>给定一幅图和一个起点s，从s到给定目的顶点v是否存在一条路径？如果有，找出其中最短的那条。</p>
-</blockquote>
-</li>
-<li><p>解决思路：</p>
-<blockquote>
-<p>找到从s到v的最短路径：</p>
-<ol>
-<li>从s开始，在所有由一条边就可以到达的顶点中寻找x</li>
-<li>第一层找完，如未找到x，递归向下</li>
-</ol>
-</blockquote>
-</li>
-<li><p>实现</p>
-<blockquote>
-<p>使用队列保存所有已被标记但邻接表还未被检查过的顶点</p>
-<ol>
-<li>将起点加入队列</li>
-<li>取队列中的下一个顶点v并标记它</li>
-<li>将与v相邻的所有未被标记过的顶点加入队列</li>
-</ol>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BreadthFirstPaths</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 到达该顶点的最短路径已知吗</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">  <span class="comment">// 到达该顶点的已知路径上的最后一个顶点</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span>[] edgeTo;</span><br><span class="line">  <span class="comment">// 起点</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">BreadthFirstPaths</span><span class="params">(Graph G, <span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    edgeTo = <span class="keyword">new</span> <span class="keyword">int</span>[G.V()];</span><br><span class="line">    <span class="keyword">this</span>.s = s;</span><br><span class="line">    bfs(G, s);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">bfs</span><span class="params">(Graph G, <span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    Queue&lt;Integer&gt; queue = <span class="keyword">new</span> Queue&lt;Integer&gt;();</span><br><span class="line">    <span class="comment">// 标记起点</span></span><br><span class="line">    marked[s] = <span class="keyword">true</span>;</span><br><span class="line">    <span class="comment">// 将它加入队列</span></span><br><span class="line">    queue.enqueue(s);</span><br><span class="line">    <span class="keyword">while</span>(!queue.isEmpty()) &#123;</span><br><span class="line">      <span class="comment">// 队列中删去队首顶点</span></span><br><span class="line">      <span class="keyword">int</span> v = queue.dequeue();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> w : G.adj(v)) &#123;</span><br><span class="line">        <span class="comment">// 对每个未被标记的相邻顶点</span></span><br><span class="line">        <span class="keyword">if</span> (!marked[w]) &#123;</span><br><span class="line">          <span class="comment">// 保存最短路径的最后一条边</span></span><br><span class="line">          edgeTo[w] = v;</span><br><span class="line">          <span class="comment">// 标记它，因为最短路径已知</span></span><br><span class="line">          marked[w] = <span class="keyword">true</span>;</span><br><span class="line">          <span class="comment">// 将该顶点加入到队列中</span></span><br><span class="line">          queue.enqueue(w);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasPathTo</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> marked[v];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Iterable&lt;Integer&gt; <span class="title">pathTo</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasPathTo(v)) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    Stack&lt;Integer&gt; path = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = v; x != s; x = edgeTo[x]) &#123;</span><br><span class="line">      path.push(x);</span><br><span class="line">    &#125;</span><br><span class="line">    path.push(s);</span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="连通分量"><a href="#连通分量" class="headerlink" title="连通分量"></a>连通分量</h2><ul>
-<li><p>深度优先搜索的应用</p>
-</li>
-<li><p>API</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CC</span> </span>&#123;</span><br><span class="line">  CC(Graph G);</span><br><span class="line">  <span class="comment">// v和w是否连通</span></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w)</span></span>;</span><br><span class="line">  <span class="comment">// 连通分量数</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">count</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="comment">// v所在的连通分量的标识符（0~count() - 1）</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">(<span class="keyword">int</span> v)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>测试用例</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  Graph G = <span class="keyword">new</span> Graph(<span class="keyword">new</span> In(args[<span class="number">0</span>]));</span><br><span class="line">  CC cc = <span class="keyword">new</span> CC(G);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">int</span> M = cc.count();</span><br><span class="line">  sout(M + <span class="string">"components"</span>);</span><br><span class="line">  </span><br><span class="line">  Bag&lt;Integer&gt;[] components;</span><br><span class="line">  components = (Bag&lt;Integer&gt;[]) <span class="keyword">new</span> Bag[M];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) &#123;</span><br><span class="line">    components[i] = <span class="keyword">new</span> Bag&lt;Integer&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; G.V(); v++) &#123;</span><br><span class="line">    components[cc.id(v)].add(v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> v : components[i]) &#123;</span><br><span class="line">      sout(v + <span class="string">" "</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    sout();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>找出所有连通分量API实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CC</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span>[] id;</span><br><span class="line">  <span class="comment">// 连通路径计数</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">CC</span><span class="params">(Graph G)</span> </span>&#123;</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    id = <span class="keyword">new</span> <span class="keyword">int</span>[G.V()];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; G.V(); s++) &#123;</span><br><span class="line">      dfs(G, s);</span><br><span class="line">      <span class="comment">// 深度优先搜索完成一条连通路径后，路径计数+1</span></span><br><span class="line">      count++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Graph G, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    marked[v] = <span class="keyword">true</span>;</span><br><span class="line">    <span class="comment">// 在同一条连通路径上的顶点用相同的连通路径计数来表示</span></span><br><span class="line">    id[v] = count;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> w : G.adj(v)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[w]) &#123;</span><br><span class="line">        dfs(G, w);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> id[v] == id[w];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">id</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> id[v];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="深度优先算法和并查集比较"><a href="#深度优先算法和并查集比较" class="headerlink" title="深度优先算法和并查集比较"></a>深度优先算法和并查集比较</h2><ul>
-<li><p>理论上</p>
-<blockquote>
-<p>深度优先算法应该比并查集快，因为深度优先算法能保证所需的时间为常数而并查集不能</p>
-</blockquote>
-</li>
-<li><p>实际上</p>
-<blockquote>
-<p>并查集是一种动态算法，不需要完整的构造并表示一幅图，所以并查集算法在实际应用中更快。</p>
-<p>深度优先搜索更适合实现图的抽象数据类型</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="深度优先搜索算法的其他应用"><a href="#深度优先搜索算法的其他应用" class="headerlink" title="深度优先搜索算法的其他应用"></a>深度优先搜索算法的其他应用</h2><ul>
-<li><p>检测环</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cycle</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span> hasCycle;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Cycle</span><span class="params">(Graph G)</span> </span>&#123;</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; G.V(); s++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[s]) &#123;</span><br><span class="line">        dfs(G, s, s);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Graph G, <span class="keyword">int</span> v, <span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    marked[v] = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> w : G.adj(v)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[w]) &#123;</span><br><span class="line">        dfs(G, w, v);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 判断是否成环</span></span><br><span class="line">      <span class="comment">// 基于假设：无自环，无平行边</span></span><br><span class="line">      <span class="comment">// 即1，3顶点含有一共同顶点2</span></span><br><span class="line">      <span class="comment">// 且1，3顶点之间只有一条边</span></span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (w != u) hasCycle = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> hasCycle;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+两个顶点之间的连接
 
 
+特殊情况：
 
-</li>
-</ul>
-<ul>
-<li><p>双色问题</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TwoColor</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] marked;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span>[] color;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span> isTwoColorable = <span class="keyword">true</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">TwoColor</span><span class="params">(Graph G)</span> </span>&#123;</span><br><span class="line">    marked = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    color = <span class="keyword">new</span> <span class="keyword">boolean</span>[G.V()];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; G.V(); s++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[s]) &#123;</span><br><span class="line">        dfs(G, s);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Graph G, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    marked[v] = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (itn w : G.adj(v)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!marked[w]) &#123;</span><br><span class="line">        color[w] = !color[v];</span><br><span class="line">        dfs(G, w);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (color[w] == color[v]) &#123;</span><br><span class="line">        isTwoColorable = <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isBipartite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> isTwoColorable;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+自环：一条连接一个顶点和其自身的边
+平行边：连接同一对顶点的两条边
 
-</li>
-</ul>
-<h2 id="符号图"><a href="#符号图" class="headerlink" title="符号图"></a>符号图</h2><ul>
-<li><p>性质</p>
-<blockquote>
-<ul>
-<li>顶点名为</li>
-</ul>
-</blockquote>
-</li>
-</ul>
 
-          
+术语
+
+相邻顶点：
+
+通过一条边相连的两个顶点，并称该连
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/25/图论笔记/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -712,11 +471,18 @@
       
         
           
-            <h1 id="Hexo配置参考"><a href="#Hexo配置参考" class="headerlink" title="Hexo配置参考"></a>Hexo配置参考</h1><ul>
-<li><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">https://github.com/limedroid/HexoLearning</a></li>
-</ul>
+          Hexo配置参考
+https://github.com/limedroid/HexoLearning
+
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/23/hexo配置参考/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -834,21 +600,15 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/23/hello-world/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
