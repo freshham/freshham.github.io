@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="freshham">
 <meta property="og:description" content="学习顺序 无向图（简单连接） 有向图（连接有方向） 加权图（连接带有权值） 加权有向图（连接即有方向性又带有权值）  无向图 边：  两个顶点之间的连接   特殊情况：  自环：一条连接一个顶点和其自身的边 平行边：连接同一对顶点的两条边   术语  相邻顶点：  通过一条边相连的两个顶点，并称该连接依附于这两个顶点   子图：  一幅图的所有的边的一个子集   路径  由边顺序连接的一系列顶点">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-26T03:51:20.545Z">
+<meta property="og:updated_time" content="2019-07-26T10:56:30.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图论笔记">
 <meta name="twitter:description" content="学习顺序 无向图（简单连接） 有向图（连接有方向） 加权图（连接带有权值） 加权有向图（连接即有方向性又带有权值）  无向图 边：  两个顶点之间的连接   特殊情况：  自环：一条连接一个顶点和其自身的边 平行边：连接同一对顶点的两条边   术语  相邻顶点：  通过一条边相连的两个顶点，并称该连接依附于这两个顶点   子图：  一幅图的所有的边的一个子集   路径  由边顺序连接的一系列顶点">
@@ -585,9 +585,16 @@
 <li><p>性质</p>
 <blockquote>
 <ul>
-<li>顶点名为</li>
+<li>顶点名为字符串</li>
+<li>用指定的分隔符分隔顶点名</li>
+<li>每一行都表示一组边的集合，每一条边都连接着这一行的第一个名称表示的顶点和其他名称所表示的顶点</li>
+<li>顶点总数V和边的总数E都是隐式定义的</li>
 </ul>
 </blockquote>
+</li>
+<li><p>API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SymbolGraph</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 根据filename制定的文件构造图</span></span><br><span class="line">  <span class="comment">// 使用delim来分隔顶点名</span></span><br><span class="line">  SymbolGraph(String fileName, String delim);</span><br><span class="line">  <span class="comment">// 校验key是否为一个顶点</span></span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(String key)</span></span>;</span><br><span class="line">  <span class="comment">// key的索引</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">index</span><span class="params">(String key)</span></span>;</span><br><span class="line">  <span class="comment">// 索引v的顶点名</span></span><br><span class="line">  <span class="function">String <span class="title">name</span><span class="params">(<span class="keyword">int</span> v)</span></span>;</span><br><span class="line">  <span class="comment">// 隐藏的Graph对象</span></span><br><span class="line">  <span class="function">Graph <span class="title">G</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 
@@ -629,6 +636,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/30/redis学习笔记/" rel="prev" title="redis学习笔记">
+                redis学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -705,7 +716,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -718,7 +729,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

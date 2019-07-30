@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="参考链接,">
+  <meta name="keywords" content="参考链接,redis,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Hexo配置参考 https://github.com/limedroid/HexoLearning  https://www.jianshu.com/p/393d067dba8d">
-<meta name="keywords" content="参考链接">
+<meta name="description" content="redis用处 redis可以做的事情：  服务器缓存，高效提升服务器性能  sortSet数据结构实现排行榜  计数器（频繁的读写操作）  限速器（限制用户访问某个api的频率）  集合命令应用：  好友关系推荐 共同好友 共同爱好   List实现简单消息队列（不需高可靠性）  到货通知 邮件发送   Session共享  解决集群服务时，用户多服务器登陆问题      Redis不能做的事情">
+<meta name="keywords" content="参考链接,redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo配置参考">
-<meta property="og:url" content="http://yoursite.com/2019/07/23/hexo配置参考/index.html">
+<meta property="og:title" content="redis学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/07/30/redis学习笔记/index.html">
 <meta property="og:site_name" content="freshham">
-<meta property="og:description" content="Hexo配置参考 https://github.com/limedroid/HexoLearning  https://www.jianshu.com/p/393d067dba8d">
+<meta property="og:description" content="redis用处 redis可以做的事情：  服务器缓存，高效提升服务器性能  sortSet数据结构实现排行榜  计数器（频繁的读写操作）  限速器（限制用户访问某个api的频率）  集合命令应用：  好友关系推荐 共同好友 共同爱好   List实现简单消息队列（不需高可靠性）  到货通知 邮件发送   Session共享  解决集群服务时，用户多服务器登陆问题      Redis不能做的事情">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-26T08:48:16.842Z">
+<meta property="og:updated_time" content="2019-07-30T06:21:24.913Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo配置参考">
-<meta name="twitter:description" content="Hexo配置参考 https://github.com/limedroid/HexoLearning  https://www.jianshu.com/p/393d067dba8d">
+<meta name="twitter:title" content="redis学习笔记">
+<meta name="twitter:description" content="redis用处 redis可以做的事情：  服务器缓存，高效提升服务器性能  sortSet数据结构实现排行榜  计数器（频繁的读写操作）  限速器（限制用户访问某个api的频率）  集合命令应用：  好友关系推荐 共同好友 共同爱好   List实现简单消息队列（不需高可靠性）  到货通知 邮件发送   Session共享  解决集群服务时，用户多服务器登陆问题      Redis不能做的事情">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/23/hexo配置参考/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/30/redis学习笔记/">
 
 
 
 
 
-  <title>hexo配置参考 | freshham</title>
+  <title>redis学习笔记 | freshham</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/23/hexo配置参考/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/30/redis学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="freshham">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">hexo配置参考</h1>
+          <h1 class="post-title" itemprop="name headline">redis学习笔记</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-23T15:45:59+08:00">
-                2019-07-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-30T14:12:01+08:00">
+                2019-07-30
               </time>
             
 
@@ -320,11 +320,51 @@
       
 
       
-        <h1 id="Hexo配置参考"><a href="#Hexo配置参考" class="headerlink" title="Hexo配置参考"></a>Hexo配置参考</h1><ul>
-<li><p><a href="https://github.com/limedroid/HexoLearning" target="_blank" rel="noopener">https://github.com/limedroid/HexoLearning</a></p>
+        <h1 id="redis用处"><a href="#redis用处" class="headerlink" title="redis用处"></a>redis用处</h1><ul>
+<li><p>redis可以做的事情：</p>
+<ul>
+<li><p>服务器缓存，高效提升服务器性能</p>
 </li>
-<li><p><a href="https://www.jianshu.com/p/393d067dba8d" target="_blank" rel="noopener">https://www.jianshu.com/p/393d067dba8d</a></p>
+<li><p>sortSet数据结构实现排行榜</p>
 </li>
+<li><p>计数器（频繁的读写操作）</p>
+</li>
+<li><p>限速器（限制用户访问某个api的频率）</p>
+</li>
+<li><p>集合命令应用：</p>
+<ul>
+<li>好友关系推荐</li>
+<li>共同好友</li>
+<li>共同爱好</li>
+</ul>
+</li>
+<li><p>List实现简单消息队列（不需高可靠性）</p>
+<ul>
+<li>到货通知</li>
+<li>邮件发送</li>
+</ul>
+</li>
+<li><p>Session共享</p>
+<blockquote>
+<p>解决集群服务时，用户多服务器登陆问题</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Redis不能做的事情"><a href="#Redis不能做的事情" class="headerlink" title="Redis不能做的事情"></a>Redis不能做的事情</h1><ul>
+<li><p>数据量大不适合</p>
+</li>
+<li><p>数据访问频率低不适合</p>
+</li>
+<li><p>例：</p>
+<blockquote>
+<p>用redis去保存用户基本信息，进行持久化支持</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li><a href="https://juejin.im/post/5b516dc75188251af363492d" target="_blank" rel="noopener">https://juejin.im/post/5b516dc75188251af363492d</a></li>
 </ul>
 
       
@@ -345,6 +385,8 @@
           
             <a href="/tags/参考链接/" rel="tag"># 参考链接</a>
           
+            <a href="/tags/redis/" rel="tag"># redis</a>
+          
         </div>
       
 
@@ -356,8 +398,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/23/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2019/07/25/图论笔记/" rel="next" title="图论笔记">
+                <i class="fa fa-chevron-left"></i> 图论笔记
               </a>
             
           </div>
@@ -365,10 +407,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/25/图论笔记/" rel="prev" title="图论笔记">
-                图论笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -491,7 +529,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo配置参考"><span class="nav-number">1.</span> <span class="nav-text">Hexo配置参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#redis用处"><span class="nav-number">1.</span> <span class="nav-text">redis用处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis不能做的事情"><span class="nav-number">2.</span> <span class="nav-text">Redis不能做的事情</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">3.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
             
 
           </div>
