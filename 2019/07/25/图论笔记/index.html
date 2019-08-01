@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="freshham">
 <meta property="og:description" content="学习顺序 无向图（简单连接） 有向图（连接有方向） 加权图（连接带有权值） 加权有向图（连接即有方向性又带有权值）  无向图 边：  两个顶点之间的连接   特殊情况：  自环：一条连接一个顶点和其自身的边 平行边：连接同一对顶点的两条边   术语  相邻顶点：  通过一条边相连的两个顶点，并称该连接依附于这两个顶点   子图：  一幅图的所有的边的一个子集   路径  由边顺序连接的一系列顶点">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-26T10:56:30.497Z">
+<meta property="og:updated_time" content="2019-08-01T03:13:59.653Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图论笔记">
 <meta name="twitter:description" content="学习顺序 无向图（简单连接） 有向图（连接有方向） 加权图（连接带有权值） 加权有向图（连接即有方向性又带有权值）  无向图 边：  两个顶点之间的连接   特殊情况：  自环：一条连接一个顶点和其自身的边 平行边：连接同一对顶点的两条边   术语  相邻顶点：  通过一条边相连的两个顶点，并称该连接依附于这两个顶点   子图：  一幅图的所有的边的一个子集   路径  由边顺序连接的一系列顶点">
@@ -597,6 +597,23 @@
 
 </li>
 </ul>
+<h1 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h1><h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><ul>
+<li><p>定义</p>
+<blockquote>
+<p>一幅有<strong>方向性的图（或有向图）</strong>是由一组<strong>顶点</strong>和一组有方向的边组成的，每条<strong>有方向的边</strong>都连接着有序的一对顶点</p>
+<p>一条有向边由第一个顶点<strong>指出并指向</strong>第二个顶点</p>
+</blockquote>
+</li>
+<li><p>顶点的度数</p>
+<ul>
+<li>出度：该顶点指出的边的总数</li>
+<li>入读：指向该顶点的边的总数</li>
+</ul>
+</li>
+<li><p>有向边的第一个顶点称为<strong>头</strong>，第二个顶点称为<strong>尾</strong></p>
+</li>
+<li></li>
+</ul>
 
       
     </div>
@@ -716,7 +733,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -762,7 +779,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#学习顺序"><span class="nav-number">1.</span> <span class="nav-text">学习顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无向图"><span class="nav-number">2.</span> <span class="nav-text">无向图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#表示无向图的数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">表示无向图的数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图的几种表示方法"><span class="nav-number">2.2.</span> <span class="nav-text">图的几种表示方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邻接表的数据结构"><span class="nav-number">2.3.</span> <span class="nav-text">邻接表的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图的处理算法的设计模式"><span class="nav-number">2.4.</span> <span class="nav-text">图的处理算法的设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索"><span class="nav-number">2.5.</span> <span class="nav-text">深度优先搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单向通道"><span class="nav-number">2.5.1.</span> <span class="nav-text">单向通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找路径"><span class="nav-number">2.5.2.</span> <span class="nav-text">寻找路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">2.5.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先搜索"><span class="nav-number">2.6.</span> <span class="nav-text">广度优先搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连通分量"><span class="nav-number">2.7.</span> <span class="nav-text">连通分量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先算法和并查集比较"><span class="nav-number">2.8.</span> <span class="nav-text">深度优先算法和并查集比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索算法的其他应用"><span class="nav-number">2.9.</span> <span class="nav-text">深度优先搜索算法的其他应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#符号图"><span class="nav-number">2.10.</span> <span class="nav-text">符号图</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#学习顺序"><span class="nav-number">1.</span> <span class="nav-text">学习顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无向图"><span class="nav-number">2.</span> <span class="nav-text">无向图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#表示无向图的数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">表示无向图的数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图的几种表示方法"><span class="nav-number">2.2.</span> <span class="nav-text">图的几种表示方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邻接表的数据结构"><span class="nav-number">2.3.</span> <span class="nav-text">邻接表的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图的处理算法的设计模式"><span class="nav-number">2.4.</span> <span class="nav-text">图的处理算法的设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索"><span class="nav-number">2.5.</span> <span class="nav-text">深度优先搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单向通道"><span class="nav-number">2.5.1.</span> <span class="nav-text">单向通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找路径"><span class="nav-number">2.5.2.</span> <span class="nav-text">寻找路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">2.5.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先搜索"><span class="nav-number">2.6.</span> <span class="nav-text">广度优先搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连通分量"><span class="nav-number">2.7.</span> <span class="nav-text">连通分量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先算法和并查集比较"><span class="nav-number">2.8.</span> <span class="nav-text">深度优先算法和并查集比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索算法的其他应用"><span class="nav-number">2.9.</span> <span class="nav-text">深度优先搜索算法的其他应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#符号图"><span class="nav-number">2.10.</span> <span class="nav-text">符号图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有向图"><span class="nav-number">3.</span> <span class="nav-text">有向图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#术语"><span class="nav-number">3.1.</span> <span class="nav-text">术语</span></a></li></ol></li></ol></div>
             
 
           </div>
