@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="freshham">
 <meta property="og:description" content="指令重排1. 定义 计算机执行指令的顺序是在程序编译器编译之后形成的指令序列 一般而言，指令序列会输出确定的结果以保证每次的执行都有确定的结果（串行情况下） 一般情况下，CPU和编译器为了提升程序执行的效率，会按照一定的规则允许指令重排。这种优化会带来一些执行上的逻辑问题（代码逻辑间存在一定的先后顺序），并发情况下会发生二义性，即不同的执行逻辑得到不同的结果信息  2. 数据依赖性（仅单线程下有效">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-21T07:38:48.733Z">
+<meta property="og:updated_time" content="2019-11-04T08:23:23.534Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java实战高并发笔记">
 <meta name="twitter:description" content="指令重排1. 定义 计算机执行指令的顺序是在程序编译器编译之后形成的指令序列 一般而言，指令序列会输出确定的结果以保证每次的执行都有确定的结果（串行情况下） 一般情况下，CPU和编译器为了提升程序执行的效率，会按照一定的规则允许指令重排。这种优化会带来一些执行上的逻辑问题（代码逻辑间存在一定的先后顺序），并发情况下会发生二义性，即不同的执行逻辑得到不同的结果信息  2. 数据依赖性（仅单线程下有效">
@@ -748,11 +748,122 @@
 <li><p>ThreadPoolExecutor构造函数</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize, <span class="keyword">int</span> maximumPoolSize, <span class="keyword">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)</span></span>;</span><br><span class="line"><span class="comment">// 参数意义</span></span><br><span class="line">corePoolSize:指定了线程池中的线程数量</span><br><span class="line">maximumPoolSize：线程池最大线程数量</span><br><span class="line">keepAliveTime：线程池线程超过corePoolSize时，多余空闲线程的存活时间</span><br><span class="line">unit：keepAliveTime的单位</span><br><span class="line">workQueue：任务队列</span><br><span class="line">threadFactory：线程工厂，创建线程（一般用默认的即可）</span><br><span class="line">handler：拒绝策略（任务过多时，如何拒绝任务）</span><br></pre></td></tr></table></figure>
 
+
 </li>
 </ul>
 </li>
 </ul>
-<h1 id="目前阅读目录：page——103"><a href="#目前阅读目录：page——103" class="headerlink" title="目前阅读目录：page——103"></a>目前阅读目录：page——103</h1>
+<ul>
+<li><p>值得详细说明的参数</p>
+<ul>
+<li><p>workQueue任务队列</p>
+<ul>
+<li><p>直接提交队列</p>
+<blockquote>
+<p>由SynchronousQueue（是一个特殊的BlockingQueue）对象提供。</p>
+<p>SynchronousQueue没有容量，插入等相应删除，删除等对应插入</p>
+<p>新任务不会被真实保存而是直接提交给线程执行，如果无空闲线程则尝试创建新线程，如果线程线程数量到达最大值则执行拒绝策略</p>
+<p>使用SynchronousQueue时，maximumPoolSize应该设置很大</p>
+</blockquote>
+</li>
+<li><p>有界的任务队列</p>
+<blockquote>
+<p>可使用ArrayBlockingQueue实现</p>
+<p>构造函数必须带有一个容量参数，表示队列最大容量</p>
+<p>新任务进入，如果线程池实际线程数小于corePoolSize，则优先创建新的线程</p>
+</blockquote>
+</li>
+<li><p>无界的任务队列</p>
+<blockquote>
+<p>可使用LinkedBlockingQueue实现</p>
+<p>除非系统资源耗尽，不然不会出现任务入队失败的情况</p>
+<p>当有新任务到来，系统线程数少于corePoolSize时，线程池会生成新的线程执行任务，但线程数达到corePoolSize后，任务直接进入队列等待，不增加新线程。</p>
+<p>当任务创建和处理的速度差异很大时，无界队列会保持快速增长直到耗尽系统资源</p>
+</blockquote>
+</li>
+<li><p>优先任务队列</p>
+<blockquote>
+<p>通过PriorityBlockingQueue实现，可控制任务执行的先后顺序</p>
+<p>特殊的无界队列</p>
+<p>（个人猜测，使用堆排序实现）</p>
+<p>根据任务优先级执行，确保系统性能的同时，有很好的质量保证</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="线程池调度"><a href="#线程池调度" class="headerlink" title="线程池调度"></a>线程池调度</h1><ul>
+<li><p>核心代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ThreadPoolExecutor 核心调度代码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (command == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> c = ctl.get();</span><br><span class="line">  <span class="keyword">if</span> (workerCountOf(c) &lt; corePoolSize) &#123;</span><br><span class="line">    <span class="keyword">if</span> (addWorker(command, <span class="keyword">true</span>)) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    c = ctl.get();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (isRunning(c) &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">    <span class="keyword">int</span> recheck = ctl.get();</span><br><span class="line">    <span class="keyword">if</span> (!isRunning(recheck) &amp;&amp; remove(command)) &#123;</span><br><span class="line">      reject(command);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (workerCountOf(recheck) == <span class="number">0</span>) &#123;</span><br><span class="line">      addWorker(<span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!addWorker(command, <span class="keyword">false</span>)) &#123;</span><br><span class="line">    reject(command);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调度逻辑</p>
+<ol>
+<li>任务提交</li>
+<li>工作线程数与corePoolSize比较<ul>
+<li>小于：分配线程执行</li>
+<li>大于：提交等待队列：<ul>
+<li>成功：等待执行任务</li>
+<li>失败（队列满或同步锁）：直接提交到线程池<ul>
+<li>线程池达到maxSize：提交失败，拒绝执行</li>
+<li>线程池未达到maxSize：提交成功，分配新线程执行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h1><ul>
+<li><p>AbortPolicy策略：</p>
+<blockquote>
+<p>直接抛出异常，阻止系统正常工作</p>
+</blockquote>
+</li>
+<li><p>CallerRunsPolicy策略：</p>
+<blockquote>
+<p>只要线程池未关闭，该策略直接在当前调用者线程中，运行被丢弃的任务</p>
+<p>不会真正丢掉任务，但是任务提交线程性能极有可能会急剧下降</p>
+</blockquote>
+</li>
+<li><p>DiscardOledestPolicy策略：</p>
+<blockquote>
+<p>丢弃最老的任务（即将被执行的任务）并尝试再次提交当前任务</p>
+</blockquote>
+</li>
+<li><p>DiscardPolicy策略：</p>
+<blockquote>
+<p>该策略默默丢弃无法处理的请求，不进行任何处理（允许任务丢失的情况下最好方案）</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="自定义线程池（扩展拒绝策略）"><a href="#自定义线程池（扩展拒绝策略）" class="headerlink" title="自定义线程池（扩展拒绝策略）"></a>自定义线程池（扩展拒绝策略）</h2><ul>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RejectThreadPoolDemo</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      System.out.println(System.currentTimeMilles() + <span class="string">":Thread ID:"</span> + Thread.currentThread().getId());</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    MyTask task = <span class="keyword">new</span> MyTask();</span><br><span class="line">    ExecutorService es = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">5</span>,<span class="number">5</span>,OL,</span><br><span class="line">                                                TimeUnit.MILLISECONDS,</span><br><span class="line">                                                <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(<span class="number">10</span>),</span><br><span class="line">                                                Executors.defaultThreadFactory(),</span><br><span class="line">                                                <span class="keyword">new</span> RejectedExecutionHandler() &#123;</span><br><span class="line">                                                  <span class="meta">@Override</span></span><br><span class="line">                                                  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                                               ThreadPoolExecutor executor)</span> </span>&#123;</span><br><span class="line">                                                    sout(r.toStirng() + <span class="string">"is discard"</span>);</span><br><span class="line">                                                  &#125;</span><br><span class="line">                                                &#125;);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">      es.submit(task);</span><br><span class="line">      Thread.sleep(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="合理选择线程池线程数量"><a href="#合理选择线程池线程数量" class="headerlink" title="合理选择线程池线程数量"></a>合理选择线程池线程数量</h2><ul>
+<li><p>经验公式</p>
+<blockquote>
+<p>Ncpu = CPU数量</p>
+<p>Ucpu = 目标cpu使用率，0 &lt;= Ucpu &lt;= 1</p>
+<p>W/C = 等待时间与计算时间的比率</p>
+</blockquote>
+</li>
+<li><p>最优池大小：</p>
+<blockquote>
+<p>Nthreads = Ncpu * Ucpu * (1 + W/C)</p>
+<p>java中可通过Runtime.getRuntime().availableProcessors()取得可用的CPU数量</p>
+</blockquote>
+</li>
+</ul>
+
       
     </div>
     
@@ -791,6 +902,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/25/SpringBoot文档翻译/" rel="prev" title>
+                 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -867,7 +982,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -880,7 +995,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -913,7 +1028,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#指令重排"><span class="nav-number">1.</span> <span class="nav-text">指令重排</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-定义"><span class="nav-number">1.1.</span> <span class="nav-text">1. 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据依赖性（仅单线程下有效）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 数据依赖性（仅单线程下有效）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-as-if-serial语义"><span class="nav-number">1.3.</span> <span class="nav-text">3. as-if-serial语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Happen-Before规则"><span class="nav-number">1.4.</span> <span class="nav-text">4. Happen-Before规则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">2.</span> <span class="nav-text">进程与线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的状态"><span class="nav-number">2.2.</span> <span class="nav-text">线程的状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的基本操作"><span class="nav-number">2.3.</span> <span class="nav-text">线程的基本操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#等待（wait）和通知（notify）"><span class="nav-number">3.</span> <span class="nav-text">等待（wait）和通知（notify）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#挂起（suspend）和继续执行（resume）线程"><span class="nav-number">4.</span> <span class="nav-text">挂起（suspend）和继续执行（resume）线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#等待线程结束（join）与谦让（yield）"><span class="nav-number">5.</span> <span class="nav-text">等待线程结束（join）与谦让（yield）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile与java内存模型（JMM）"><span class="nav-number">6.</span> <span class="nav-text">volatile与java内存模型（JMM）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程组：分门别类的管理"><span class="nav-number">7.</span> <span class="nav-text">线程组：分门别类的管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#守护线程（Daemon）"><span class="nav-number">8.</span> <span class="nav-text">守护线程（Daemon）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的优先级"><span class="nav-number">9.</span> <span class="nav-text">线程的优先级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程安全与synchronized"><span class="nav-number">10.</span> <span class="nav-text">线程安全与synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章——JDK并发包-Page-70"><span class="nav-number">11.</span> <span class="nav-text">第三章——JDK并发包(Page-70)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步控制"><span class="nav-number">11.1.</span> <span class="nav-text">同步控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁——synchronized功能扩展"><span class="nav-number">11.1.1.</span> <span class="nav-text">重入锁——synchronized功能扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中断响应"><span class="nav-number">11.1.1.1.</span> <span class="nav-text">中断响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限时等待锁"><span class="nav-number">11.1.1.2.</span> <span class="nav-text">限时等待锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公平锁"><span class="nav-number">11.1.1.3.</span> <span class="nav-text">公平锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁的好搭档——Condition条件"><span class="nav-number">11.1.2.</span> <span class="nav-text">重入锁的好搭档——Condition条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReadWriteLock-读写锁"><span class="nav-number">11.1.3.</span> <span class="nav-text">ReadWriteLock 读写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#倒计时器：CountDownLatch"><span class="nav-number">11.1.4.</span> <span class="nav-text">倒计时器：CountDownLatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环栅栏：CyclicBarrier"><span class="nav-number">11.1.5.</span> <span class="nav-text">循环栅栏：CyclicBarrier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程阻塞工具类：LockSupport"><span class="nav-number">11.1.6.</span> <span class="nav-text">线程阻塞工具类：LockSupport</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程复用——线程池"><span class="nav-number">12.</span> <span class="nav-text">线程复用——线程池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目前阅读目录：page——103"><span class="nav-number">13.</span> <span class="nav-text">目前阅读目录：page——103</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#指令重排"><span class="nav-number">1.</span> <span class="nav-text">指令重排</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-定义"><span class="nav-number">1.1.</span> <span class="nav-text">1. 定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据依赖性（仅单线程下有效）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 数据依赖性（仅单线程下有效）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-as-if-serial语义"><span class="nav-number">1.3.</span> <span class="nav-text">3. as-if-serial语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Happen-Before规则"><span class="nav-number">1.4.</span> <span class="nav-text">4. Happen-Before规则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">2.</span> <span class="nav-text">进程与线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的状态"><span class="nav-number">2.2.</span> <span class="nav-text">线程的状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的基本操作"><span class="nav-number">2.3.</span> <span class="nav-text">线程的基本操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#等待（wait）和通知（notify）"><span class="nav-number">3.</span> <span class="nav-text">等待（wait）和通知（notify）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#挂起（suspend）和继续执行（resume）线程"><span class="nav-number">4.</span> <span class="nav-text">挂起（suspend）和继续执行（resume）线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#等待线程结束（join）与谦让（yield）"><span class="nav-number">5.</span> <span class="nav-text">等待线程结束（join）与谦让（yield）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile与java内存模型（JMM）"><span class="nav-number">6.</span> <span class="nav-text">volatile与java内存模型（JMM）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程组：分门别类的管理"><span class="nav-number">7.</span> <span class="nav-text">线程组：分门别类的管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#守护线程（Daemon）"><span class="nav-number">8.</span> <span class="nav-text">守护线程（Daemon）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的优先级"><span class="nav-number">9.</span> <span class="nav-text">线程的优先级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程安全与synchronized"><span class="nav-number">10.</span> <span class="nav-text">线程安全与synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章——JDK并发包-Page-70"><span class="nav-number">11.</span> <span class="nav-text">第三章——JDK并发包(Page-70)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步控制"><span class="nav-number">11.1.</span> <span class="nav-text">同步控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁——synchronized功能扩展"><span class="nav-number">11.1.1.</span> <span class="nav-text">重入锁——synchronized功能扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#中断响应"><span class="nav-number">11.1.1.1.</span> <span class="nav-text">中断响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限时等待锁"><span class="nav-number">11.1.1.2.</span> <span class="nav-text">限时等待锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公平锁"><span class="nav-number">11.1.1.3.</span> <span class="nav-text">公平锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁的好搭档——Condition条件"><span class="nav-number">11.1.2.</span> <span class="nav-text">重入锁的好搭档——Condition条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReadWriteLock-读写锁"><span class="nav-number">11.1.3.</span> <span class="nav-text">ReadWriteLock 读写锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#倒计时器：CountDownLatch"><span class="nav-number">11.1.4.</span> <span class="nav-text">倒计时器：CountDownLatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环栅栏：CyclicBarrier"><span class="nav-number">11.1.5.</span> <span class="nav-text">循环栅栏：CyclicBarrier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程阻塞工具类：LockSupport"><span class="nav-number">11.1.6.</span> <span class="nav-text">线程阻塞工具类：LockSupport</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程复用——线程池"><span class="nav-number">12.</span> <span class="nav-text">线程复用——线程池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池调度"><span class="nav-number">13.</span> <span class="nav-text">线程池调度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拒绝策略"><span class="nav-number">14.</span> <span class="nav-text">拒绝策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义线程池（扩展拒绝策略）"><span class="nav-number">14.1.</span> <span class="nav-text">自定义线程池（扩展拒绝策略）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合理选择线程池线程数量"><span class="nav-number">14.2.</span> <span class="nav-text">合理选择线程池线程数量</span></a></li></ol></li></ol></div>
             
 
           </div>
