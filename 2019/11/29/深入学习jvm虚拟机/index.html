@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="this is freshham&apos;s blog estimated by hexo">
+<meta name="description" content="类加载时机类生命周期 加载 验证 准备 解析 初始化 使用 卸载  类必须初始化的五种情况——主动引用 除此五个引用以外的引用都不会触发类的初始化操作，称为被动引用 以下操作为被动引用：  通过子类引用父类的静态属性，子类不触发初始化（但对于父类来说仍需要初始化，不清楚是否仍为主动引用） 通过数组定义引用某一类时，唤起字节码指令newarray，虚拟机自动生成对应数组类并触发其初始化 引用类中定义">
 <meta name="keywords" content="java,内存管理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入学习jvm虚拟机">
 <meta property="og:url" content="http://yoursite.com/2019/11/29/深入学习jvm虚拟机/index.html">
 <meta property="og:site_name" content="freshham">
-<meta property="og:description" content="this is freshham&apos;s blog estimated by hexo">
+<meta property="og:description" content="类加载时机类生命周期 加载 验证 准备 解析 初始化 使用 卸载  类必须初始化的五种情况——主动引用 除此五个引用以外的引用都不会触发类的初始化操作，称为被动引用 以下操作为被动引用：  通过子类引用父类的静态属性，子类不触发初始化（但对于父类来说仍需要初始化，不清楚是否仍为主动引用） 通过数组定义引用某一类时，唤起字节码指令newarray，虚拟机自动生成对应数组类并触发其初始化 引用类中定义">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-29T07:38:53.919Z">
+<meta property="og:updated_time" content="2020-01-17T03:50:12.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入学习jvm虚拟机">
-<meta name="twitter:description" content="this is freshham&apos;s blog estimated by hexo">
+<meta name="twitter:description" content="类加载时机类生命周期 加载 验证 准备 解析 初始化 使用 卸载  类必须初始化的五种情况——主动引用 除此五个引用以外的引用都不会触发类的初始化操作，称为被动引用 以下操作为被动引用：  通过子类引用父类的静态属性，子类不触发初始化（但对于父类来说仍需要初始化，不清楚是否仍为主动引用） 通过数组定义引用某一类时，唤起字节码指令newarray，虚拟机自动生成对应数组类并触发其初始化 引用类中定义">
 
 
 
@@ -320,7 +320,133 @@
       
 
       
-        
+        <h1 id="类加载时机"><a href="#类加载时机" class="headerlink" title="类加载时机"></a>类加载时机</h1><h2 id="类生命周期"><a href="#类生命周期" class="headerlink" title="类生命周期"></a>类生命周期</h2><ul>
+<li>加载</li>
+<li>验证</li>
+<li>准备</li>
+<li>解析</li>
+<li>初始化</li>
+<li>使用</li>
+<li>卸载</li>
+</ul>
+<h2 id="类必须初始化的五种情况——主动引用"><a href="#类必须初始化的五种情况——主动引用" class="headerlink" title="类必须初始化的五种情况——主动引用"></a>类必须初始化的五种情况——主动引用</h2><blockquote>
+<p>除此五个引用以外的引用都不会触发类的初始化操作，称为被动引用</p>
+<p>以下操作为被动引用：</p>
+<ul>
+<li>通过子类引用父类的静态属性，子类不触发初始化（但对于父类来说仍需要初始化，不清楚是否仍为主动引用）</li>
+<li>通过数组定义引用某一类时，唤起字节码指令newarray，虚拟机自动生成对应数组类并触发其初始化</li>
+<li>引用类中定义的常量不会触发定义常量的类的初始化（常量在编译阶段存入调用类的常量池中，随调用类的加载，进入方法区中的运行时常量池）</li>
+</ul>
+</blockquote>
+<ol>
+<li><p>字节码指令</p>
+<blockquote>
+<ul>
+<li>new：实例化对象</li>
+<li>getstatic：读取类的静态字段</li>
+<li>putstatic：设置类的静态字段</li>
+<li>invokestatic：调用类的静态方法</li>
+</ul>
+</blockquote>
+</li>
+<li><p>java.lang.reflect-反射机制调用类</p>
+</li>
+<li><p>初始化子类-父类必须先触发初始化</p>
+</li>
+<li><p>虚拟机启动时执行主类（用户指定）</p>
+</li>
+<li><p>jdk1.7后，java.lang.invoke.MethodHandle解析：</p>
+<blockquote>
+<ul>
+<li>REF_getStatic</li>
+<li>REF_putStatic</li>
+<li>REF_invokeStatic</li>
+</ul>
+<p>若以上方法句柄对应的类未进行过初始化，则必须初始化</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h2><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><blockquote>
+<ul>
+<li>通过类的全限定名来获取定义此类的二进制字节流</li>
+<li>将这个字节流所代表的静态存储结构（静态变量）转化为方法区的运行时数据结构</li>
+<li>内存中生成代表这个类的java.lang.Class对象，作为这个类方法区中各种数据结构的访问入口</li>
+</ul>
+</blockquote>
+<h2 id="验证（连接阶段第一步）"><a href="#验证（连接阶段第一步）" class="headerlink" title="验证（连接阶段第一步）"></a>验证（连接阶段第一步）</h2><blockquote>
+<ul>
+<li>目的：确保Class文件的字节流中包含的信息符合当前虚拟机的要求并且不会危害虚拟机自身的安全</li>
+<li>步骤<ol>
+<li>文件格式验证（Class文件格式规范验证）（魔数，版本号，常量池中常量类型，指向常量的索引值中常量是否合规等）</li>
+<li>元数据验证（字节码描述信息-语义分析）</li>
+<li>字节码验证（数据流、控制流分析，确保语序语义合法，合逻辑）</li>
+<li>符号引用验证</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<h2 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h2><blockquote>
+<p>为类变量分配内存并设置类变量初始值的阶段</p>
+</blockquote>
+<h2 id="解析阶段"><a href="#解析阶段" class="headerlink" title="解析阶段"></a>解析阶段</h2><ul>
+<li>符号引用：以一组符号来描述所引用的目标，符号可以是任何形式的字面亮。符号引用与虚拟机内存布局可以不相同，引用的目标不一定已经加载到内存中。</li>
+<li>直接引用：直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄，和虚拟机内存布局相关，引用目标必定存在于内存中。</li>
+</ul>
+<blockquote>
+<p>将符号引用替换为直接引用的过程。主要针对类（接口）、字段、类方法、接口方法、方法类型、方法句柄和调用点限定符</p>
+</blockquote>
+<h1 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h1><ul>
+<li><p>虚拟机层面-两种不同的类加载器：</p>
+<ul>
+<li>启动类加载器（C++实现，虚拟机自身的一部分）</li>
+<li>普通类加载器（java实现，独立于虚拟机外部，继承java.lang.ClassLoader）</li>
+</ul>
+</li>
+<li><p>java开发层面-三种不同的类加载器</p>
+<ul>
+<li><p>启动类加载器：</p>
+<blockquote>
+<p>加载<java_home>\lib或-Xbootclasspath参数指定的，虚拟机识别的路径的java类库</java_home></p>
+</blockquote>
+</li>
+<li><p>扩展类加载器：</p>
+<blockquote>
+<p>sun.misc.Launcher$ExtClassLoader实现</p>
+<p>加载<java_home>\lib\ext目录或被java.ext.dirs系统变量指定的路径中的类库</java_home></p>
+</blockquote>
+</li>
+<li><p>应用程序类加载器：</p>
+<blockquote>
+<p>sun.misc.Launcher$AppClassLoader实现</p>
+<p>由ClassLoader.getSystemClassLoader()方法返回，也称为系统类加载器</p>
+<p>加载ClassPath（用户类路径）指定的类库</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="双亲委派模型层次关系"><a href="#双亲委派模型层次关系" class="headerlink" title="双亲委派模型层次关系"></a>双亲委派模型层次关系</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A(启动类加载器) --&gt; B(扩展类加载器)</span><br><span class="line">	B --&gt; C(应用程序类加载器)</span><br><span class="line">	C --&gt; D(自定义加载器1)</span><br><span class="line">  C --&gt; E(自定义加载器2)</span><br></pre></td></tr></table></figure>
+
+<h2 id="双亲委派模型工作过程"><a href="#双亲委派模型工作过程" class="headerlink" title="双亲委派模型工作过程"></a>双亲委派模型工作过程</h2><blockquote>
+<p>类加载器收到类加载的请求时，先通知父类加载器去尝试完成类的加载过程，只有在父类加载器反馈无法加载时才由子加载器去尝试加载。</p>
+<p>因此，所有的类加载请求都会上送到顶层的启动类加载器首先尝试加载，然后逐层向下传递</p>
+<p>顺序：</p>
+<ol>
+<li>启动类加载器加载</li>
+<li>扩展类加载器加载</li>
+<li>应用程序类加载器加载</li>
+<li>自定义加载器加载</li>
+</ol>
+</blockquote>
+<h2 id="双亲委派模型优点"><a href="#双亲委派模型优点" class="headerlink" title="双亲委派模型优点"></a>双亲委派模型优点</h2><blockquote>
+<p>JAVA类与类加载器具有了一种带有层次关系的优先级。</p>
+<p>不同的类加载器加载同一个类，得到的结果是不同的。</p>
+<p>因此，双亲委派模型保证了同级别类走同层次加载器，从而保证加载结果一致</p>
+</blockquote>
+<h1 id="额外mark"><a href="#额外mark" class="headerlink" title="额外mark"></a>额外mark</h1><ul>
+<li>搜索一下：编译阶段，常量传播优化</li>
+</ul>
+
       
     </div>
     
@@ -416,8 +542,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -432,7 +567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -469,6 +604,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载时机"><span class="nav-number">1.</span> <span class="nav-text">类加载时机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类生命周期"><span class="nav-number">1.1.</span> <span class="nav-text">类生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类必须初始化的五种情况——主动引用"><span class="nav-number">1.2.</span> <span class="nav-text">类必须初始化的五种情况——主动引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载阶段"><span class="nav-number">1.3.</span> <span class="nav-text">加载阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">1.4.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证（连接阶段第一步）"><span class="nav-number">1.5.</span> <span class="nav-text">验证（连接阶段第一步）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备阶段"><span class="nav-number">1.6.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析阶段"><span class="nav-number">1.7.</span> <span class="nav-text">解析阶段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#双亲委派模型"><span class="nav-number">2.</span> <span class="nav-text">双亲委派模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#双亲委派模型层次关系"><span class="nav-number">2.1.</span> <span class="nav-text">双亲委派模型层次关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双亲委派模型工作过程"><span class="nav-number">2.2.</span> <span class="nav-text">双亲委派模型工作过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双亲委派模型优点"><span class="nav-number">2.3.</span> <span class="nav-text">双亲委派模型优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#额外mark"><span class="nav-number">3.</span> <span class="nav-text">额外mark</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -482,7 +633,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
