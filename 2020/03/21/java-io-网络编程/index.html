@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="java,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="this is freshham&apos;s blog estimated by hexo">
+<meta name="description" content="处理流之六：对象流 ObjectInputStream和ObjectOutputStream 用于存储和读取基本数据类型数据或对象的处理流。强大之处是可以把Java中的对象写入到数据源中，也能把对象从数据源中还原回来。 序列化：用ObjectOutputStream类保存基本类型数据或对象的机制 反序列化：用ObjectInputStream类读取基本类型数据或对象的机制 不能序列化static和">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java-io&#x2F;网络编程">
 <meta property="og:url" content="http://yoursite.com/2020/03/21/java-io-网络编程/index.html">
 <meta property="og:site_name" content="freshham">
-<meta property="og:description" content="this is freshham&apos;s blog estimated by hexo">
+<meta property="og:description" content="处理流之六：对象流 ObjectInputStream和ObjectOutputStream 用于存储和读取基本数据类型数据或对象的处理流。强大之处是可以把Java中的对象写入到数据源中，也能把对象从数据源中还原回来。 序列化：用ObjectOutputStream类保存基本类型数据或对象的机制 反序列化：用ObjectInputStream类读取基本类型数据或对象的机制 不能序列化static和">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-21T03:45:20.180Z">
+<meta property="og:updated_time" content="2020-03-22T03:45:48.621Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java-io&#x2F;网络编程">
-<meta name="twitter:description" content="this is freshham&apos;s blog estimated by hexo">
+<meta name="twitter:description" content="处理流之六：对象流 ObjectInputStream和ObjectOutputStream 用于存储和读取基本数据类型数据或对象的处理流。强大之处是可以把Java中的对象写入到数据源中，也能把对象从数据源中还原回来。 序列化：用ObjectOutputStream类保存基本类型数据或对象的机制 反序列化：用ObjectInputStream类读取基本类型数据或对象的机制 不能序列化static和">
 
 
 
@@ -319,7 +320,237 @@
       
 
       
-        
+        <h1 id="处理流之六：对象流"><a href="#处理流之六：对象流" class="headerlink" title="处理流之六：对象流"></a>处理流之六：对象流</h1><ul>
+<li>ObjectInputStream和ObjectOutputStream</li>
+<li>用于存储和读取基本数据类型数据或对象的处理流。强大之处是可以把Java中的对象写入到数据源中，也能把对象从数据源中还原回来。</li>
+<li>序列化：用ObjectOutputStream类保存基本类型数据或对象的机制</li>
+<li>反序列化：用ObjectInputStream类读取基本类型数据或对象的机制</li>
+<li>不能序列化static和transient修饰的成员变量</li>
+</ul>
+<p>#对象的序列化</p>
+<ul>
+<li>对象序列化机制允许把内存中的java对象转换成平台无关的二进制流，从而允许把这种二进制流持久地保存在磁盘上或通过网络这种二进制流传输到另一个网络节点。当其他程序获取了这种二进制流，就可以恢复成原来的java对象</li>
+<li>优点：可将任何实现了Serializable接口的对象转化为字节数据，使其在保存和传输时可被还原</li>
+<li>RMI（Remote Method Invoke-远程方法调用）过程的参数和返回值都必须实现的机制，而RMI是JavaEE的基础。因此序列化机制是JavaEE平台的基础。</li>
+<li>如果需要让某个对象支持序列化机制，则必须让对象所属的类及其属性是可序列化的，为了让某个类是可序列化的，该类必须实现如下两个接口之一。否则，会抛出NotSerializableException一场<ul>
+<li>Serializable</li>
+<li>Externalizable</li>
+</ul>
+</li>
+</ul>
+<h1 id="自定义类实现序列化和反序列化"><a href="#自定义类实现序列化和反序列化" class="headerlink" title="自定义类实现序列化和反序列化"></a>自定义类实现序列化和反序列化</h1><ul>
+<li>实现Serializable</li>
+<li>覆盖serialVersionUID（或java运行时环境根据类的内部细节自动生成的。）<ul>
+<li>自动生成的UID可能根据类的内部细节修改发生变化</li>
+<li>反序列化的时候可能不识别</li>
+</ul>
+</li>
+<li>想要进行序列化的类的所有属性（的类）都必须是实现Serializable接口（可序列化）</li>
+</ul>
+<h1 id="随机存取文件流-RandomAccessFile"><a href="#随机存取文件流-RandomAccessFile" class="headerlink" title="随机存取文件流-RandomAccessFile"></a>随机存取文件流-RandomAccessFile</h1><ul>
+<li>java.io包下</li>
+<li>实现了DataInput，DataOutput两个接口，意味着既可以输入也可以输出</li>
+<li>创建RandomAccessFile的实例需要制定一个mode参数，该参数指定RandomAccessFile的访问模式：<ul>
+<li>r：以只读方式打开</li>
+<li>rw：打开以便读取和写入</li>
+<li>rwd：打开以便读取和写入；同步文件内容的更新</li>
+<li>rws：打开以便读取和写入；同步文件内容和元数据的更新</li>
+</ul>
+</li>
+</ul>
+<h1 id="Java-NIO概述"><a href="#Java-NIO概述" class="headerlink" title="Java NIO概述"></a>Java NIO概述</h1><blockquote>
+<p> NIO与IO具有相同的作用和目的，但是使用方式完全不同。NIO支持面向缓冲区的（IO面向流），基于通道的IO操作。NIO将以更高效的方式进行文件的读写操作。</p>
+</blockquote>
+<ul>
+<li>Java API提供了两套NIO，面向标准输入输出的NIO和面向网络编程的NIO</li>
+</ul>
+<h2 id="JDK7提出NIO2"><a href="#JDK7提出NIO2" class="headerlink" title="JDK7提出NIO2"></a>JDK7提出NIO2</h2><h3 id="核心API"><a href="#核心API" class="headerlink" title="核心API"></a>核心API</h3><ul>
+<li><p>Path：File类的升级版本，实际引用的资源也可以不存在，用于替换File</p>
+<ul>
+<li><p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Path path = Paths.get(<span class="string">"file.txt"</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Paths：用于获取Path类，path工厂？</p>
+</li>
+<li><p>Files</p>
+</li>
+</ul>
+<h1 id="网络编程概述"><a href="#网络编程概述" class="headerlink" title="网络编程概述"></a>网络编程概述</h1><ul>
+<li><p>如何实现网络中的主机互相通信</p>
+<ul>
+<li><p>通信双方地址</p>
+<ul>
+<li>IP</li>
+<li>端口号</li>
+</ul>
+</li>
+<li><p>一定的规则（网络通信协议）</p>
+<ul>
+<li>OSI参考模型：模型过于理论化，未能在Internet上广泛推广</li>
+<li>TCP/IP协议（实际上关机标准）</li>
+</ul>
+</li>
+<li><p>协议分层</p>
+<table>
+<thead>
+<tr>
+<th>OSI模型</th>
+<th>TCP/IP模型</th>
+<th>各层对应协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用层</td>
+<td>应用层</td>
+<td>HTTP、FTP、Telnet、DNS</td>
+</tr>
+<tr>
+<td>表示层</td>
+<td>同上</td>
+<td></td>
+</tr>
+<tr>
+<td>会话层</td>
+<td>同上</td>
+<td></td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>传输层</td>
+<td>TCP、UDP</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>网络层</td>
+<td>IP、ICMP、ARP</td>
+</tr>
+<tr>
+<td>数据链路层</td>
+<td>物理+数据链路层</td>
+<td>Link</td>
+</tr>
+<tr>
+<td>物理层</td>
+<td>物理+数据链路层</td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>数据封装过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">flow</span><br><span class="line">st=&gt;start: 数据封装</span><br><span class="line">op1=&gt;operation: 应用层</span><br><span class="line">op2=&gt;operation: 表示层</span><br><span class="line">op3=&gt;operation: 会话层</span><br><span class="line">op4=&gt;operation: 传输层（segment）</span><br><span class="line">op5=&gt;operation: 网络层（package）</span><br><span class="line">op6=&gt;operation: 数据链路层（frame）</span><br><span class="line">op7=&gt;operation: 物理层（bits）</span><br><span class="line">e=&gt;end: 对外发送</span><br><span class="line">st-&gt;op1-&gt;op2-&gt;op3-&gt;op4-&gt;op5-&gt;op6-&gt;op7</span><br><span class="line">op7-&gt;e</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="IP和端口号"><a href="#IP和端口号" class="headerlink" title="IP和端口号"></a>IP和端口号</h2><h3 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h3><ul>
+<li><p>IP地址：InetAddress</p>
+<ul>
+<li>唯一表示Internet上的计算机</li>
+<li>本地回环地址：127.0.0.1</li>
+<li>主机名：localhost</li>
+</ul>
+</li>
+<li><p>IP地址分类：</p>
+<ul>
+<li><p>IPV4：</p>
+<blockquote>
+<p>4个字节组成，4个0-255，大概42亿，30亿都在北美，亚洲4亿。2011年初已经用尽，以点分十进制表示，如192.168.0.1</p>
+</blockquote>
+</li>
+<li><p>IPV6</p>
+<blockquote>
+<p>128位（16个字节），写成8个无符号位整数，每个整数用4个16进制位表示，数之间用冒号（：）分开，如：3ffe:3201:1401:1280:c8ff:fe4d:db39:1984</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>IP地址分类方式2:公网地址（万维网使用）和私有地址（局域网使用）</p>
+<blockquote>
+<p>192.168开头的就是私有地址，范围为192.168.0.0–192.168.255.255，专门为组织机构内部使用</p>
+</blockquote>
+</li>
+<li><p>特点：不易记忆</p>
+</li>
+</ul>
+<h3 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h3><ul>
+<li>标识在计算机上运行的程序</li>
+<li>不同的进程有不同的端口号</li>
+<li>被规定为一个16位的整数0～65535</li>
+<li>端口分类<ul>
+<li>公认端口：0～1023，被预先定义的服务通信占用（HTTP占用80，FTP占用21，Telnet占用23）</li>
+<li>注册端口：1024～49151，分配给用户进程或应用程序。（如：Tomcat占用端口8080，Mysql占用端口3306，Oracle占用端口1521等）</li>
+<li>动态/私有端口：49152～65535</li>
+</ul>
+</li>
+<li>端口号与IP地址的组合得出一个网络套接字：Socket</li>
+</ul>
+<h3 id="端口号与IP地址的组合得出一个网络套接字：Socket"><a href="#端口号与IP地址的组合得出一个网络套接字：Socket" class="headerlink" title="端口号与IP地址的组合得出一个网络套接字：Socket"></a>端口号与IP地址的组合得出一个网络套接字：Socket</h3><h2 id="网络编程协议"><a href="#网络编程协议" class="headerlink" title="网络编程协议"></a>网络编程协议</h2><ul>
+<li>计算机网络中实现通信必须有一些约定，即通信协议，对速率、传输代码、代码结构、传输控制步骤、出错控制等制定标准。</li>
+</ul>
+<h3 id="通信协议分层的思想"><a href="#通信协议分层的思想" class="headerlink" title="通信协议分层的思想"></a>通信协议分层的思想</h3><blockquote>
+<p>在制定协议时，把复杂成份分解成一些简单的成份，再将它们复合起来，最常用的复合方式是层次方式，即同层间可以通信、上一层可以调用下一层，而与在下一层不发生关系。各层互不影响，利于系统的开发和扩展。</p>
+</blockquote>
+<h3 id="TCP-IP协议簇"><a href="#TCP-IP协议簇" class="headerlink" title="TCP/IP协议簇"></a>TCP/IP协议簇</h3><ul>
+<li>传输层协议有两个非常重要的协议<ul>
+<li>传输控制协议TCP</li>
+<li>用户数据协议UDP</li>
+</ul>
+</li>
+<li>TCP/IP以其两个主要协议：传输控制协议（TCP）和网络互联协议（IP）而得名，实际上是一组协议，包括多个具有不同功能且互为关联的协议。</li>
+<li>IP（Internet Protocol）协议是网络层的主要协议，支持网间互联的数据通信</li>
+<li>TCP/IP协议模型从更实用的角度出发，形成了高效的四层体系结构，即<strong>物理链路层、IP层、传输层和应用层</strong></li>
+</ul>
+<h3 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h3><ul>
+<li>TCP协议：<ul>
+<li>使用TCP协议前，须先建立TCP连接，形成传输数据通道</li>
+<li>传输前，采用“三次握手”方式，点对点通信，是可靠的</li>
+<li>TCP协议进行通信的两个应用进程：客户端、服务端</li>
+<li>在连接中可进行大数据量的传输</li>
+<li>传输完毕后，需释放已建立的连接，效率低</li>
+</ul>
+</li>
+<li>UDP协议：<ul>
+<li>将数据、源、目的封装成数据包，不需要建立连接</li>
+<li>每个数据报的大小限制在64k内</li>
+<li>发送方不管对方是否准备好，接收方收到也不确认，故是不可靠的</li>
+<li>可以广播发送</li>
+<li>发送数据结束时无需释放资源，开销小，速度快</li>
+</ul>
+</li>
+</ul>
+<h3 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP-三次握手"></a>TCP-三次握手</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 客户端发送报文</span><br><span class="line">op1=&gt;operation: 报文体：syn报文+seq序列号（例：syn=message，seq=x）</span><br><span class="line">op2=&gt;operation: 服务端接收报文</span><br><span class="line">op3=&gt;operation: 服务端发送确认报文</span><br><span class="line">op4=&gt;operation: 报文体：syn+ACK+sql（syn为客户端发送syn原文，ack=x+1，seq=y）</span><br><span class="line">op5=&gt;operation: 客户端接收报文</span><br><span class="line">op6=&gt;operation: 客户端发送确认报文</span><br><span class="line">op7=&gt;operation: 报文体：sql+ACK（ACK=y+1，sql=z）</span><br><span class="line">e=&gt;end: 服务端接收</span><br><span class="line">st-&gt;op1-&gt;op2-&gt;op3-&gt;op4-&gt;op5-&gt;op6-&gt;op7-&gt;e</span><br></pre></td></tr></table></figure>
+
+<h3 id="UDP网络编程举例"><a href="#UDP网络编程举例" class="headerlink" title="UDP网络编程举例"></a>UDP网络编程举例</h3><ul>
+<li>这个我觉得目前不用深入学习</li>
+</ul>
+<h2 id="URL类的理解与实例化"><a href="#URL类的理解与实例化" class="headerlink" title="URL类的理解与实例化"></a>URL类的理解与实例化</h2><blockquote>
+<p>统一资源定位符，表示Internet上某一资源的地址</p>
+<p>是一种具体的URI，可以用来标识一个资源并给出具体locate</p>
+</blockquote>
+<ul>
+<li><p>URL的基本结构</p>
+<ul>
+<li>传输协议</li>
+<li>主机名（ip/domainName）</li>
+<li>端口号</li>
+<li>文件路径</li>
+<li>片段名</li>
+<li>参数列表</li>
+</ul>
+</li>
+<li><p>结构分布：</p>
+<p>&lt;协议&gt;://&lt;主机&gt;:&lt;端口&gt;/&lt;路径&gt;#&lt;片段&gt;?&lt;参数&gt;&amp;&lt;参数&gt;</p>
+</li>
+</ul>
+
       
     </div>
     
@@ -333,6 +564,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
       
 
       
@@ -352,6 +589,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/22/java-反射/" rel="prev" title="java-反射">
+                java-反射 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -403,8 +644,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -419,7 +669,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -455,6 +705,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#处理流之六：对象流"><span class="nav-number">1.</span> <span class="nav-text">处理流之六：对象流</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义类实现序列化和反序列化"><span class="nav-number">2.</span> <span class="nav-text">自定义类实现序列化和反序列化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#随机存取文件流-RandomAccessFile"><span class="nav-number">3.</span> <span class="nav-text">随机存取文件流-RandomAccessFile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-NIO概述"><span class="nav-number">4.</span> <span class="nav-text">Java NIO概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK7提出NIO2"><span class="nav-number">4.1.</span> <span class="nav-text">JDK7提出NIO2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#核心API"><span class="nav-number">4.1.1.</span> <span class="nav-text">核心API</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络编程概述"><span class="nav-number">5.</span> <span class="nav-text">网络编程概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP和端口号"><span class="nav-number">5.1.</span> <span class="nav-text">IP和端口号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IP"><span class="nav-number">5.1.1.</span> <span class="nav-text">IP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口号"><span class="nav-number">5.1.2.</span> <span class="nav-text">端口号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口号与IP地址的组合得出一个网络套接字：Socket"><span class="nav-number">5.1.3.</span> <span class="nav-text">端口号与IP地址的组合得出一个网络套接字：Socket</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络编程协议"><span class="nav-number">5.2.</span> <span class="nav-text">网络编程协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通信协议分层的思想"><span class="nav-number">5.2.1.</span> <span class="nav-text">通信协议分层的思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-IP协议簇"><span class="nav-number">5.2.2.</span> <span class="nav-text">TCP/IP协议簇</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP和UDP"><span class="nav-number">5.2.3.</span> <span class="nav-text">TCP和UDP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-三次握手"><span class="nav-number">5.2.4.</span> <span class="nav-text">TCP-三次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP网络编程举例"><span class="nav-number">5.2.5.</span> <span class="nav-text">UDP网络编程举例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL类的理解与实例化"><span class="nav-number">5.3.</span> <span class="nav-text">URL类的理解与实例化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
